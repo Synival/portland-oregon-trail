@@ -5,10 +5,9 @@ function Store(name, items) {
 
    // Functions.
    that.GetItem = function (name) {
-      for (var i in that.items)
-         if (that.items[i].name == name)
-            return that.items[i];
-      return null;
+      if (!(name in that.items))
+         return null;
+      return that.items[name];
    };
    that.LogItems = function () {
       console.log ("Store '" + that.name + "' items:");
@@ -18,8 +17,11 @@ function Store(name, items) {
       }
       console.log ("");
    }
+   that.NewItem = function (name, quantity) {
+      that.items[name] = new StoreItem (name, quantity);
+   }
 
    // Initialization.
    that.name  = name;
-   that.items = items;
+   that.items = [];
 }

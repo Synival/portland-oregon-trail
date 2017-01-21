@@ -5,9 +5,14 @@ function Player() {
 
    // Functions.
    that.NewItem = function (name, quantity, unit, units) {
-      if (!ItemDoesntExist (name))
+      if (!ItemExists (name))
          return;
-      that.items.push (new Item (name, quantity, unit, units));
+      that.items[name] = new Item (name, quantity, unit, units);
+   };
+   that.NewStat = function (name, value) {
+      if (!StatExists (name))
+         return;
+      that.stats[name] = new Stat (name, value);
    }
    that.Purchase = function (store, name, quantity) {
       // Get our own items and the store items.
@@ -38,12 +43,11 @@ function Player() {
       that.ChangeMoney (-total);
       that.ChangeItem (pItem, quantity);
       return true;
-   }
+   };
    that.GetItem = function (name) {
-      for (var i in that.items)
-         if (that.items[i].name == name)
-            return that.items[i];
-      return null;
+      if (!(name in that.items))
+         return null;
+      return that.items[name];
    };
    that.ChangeItem = function (name, amount) {
       var item;
@@ -55,7 +59,7 @@ function Player() {
          return false;
       item.quantity += amount;
       return true;
-   }
+   };
    that.GetMoney = function () {
       return that.GetItem ("money").quantity;
    }
@@ -69,19 +73,22 @@ function Player() {
          console.log ("   " + item.DisplayName ());
       }
       console.log ("");
-   }
+   };
+
+   // Basic initialization.
+   that.Name = "Nameless";
 
    // Initialize our items.
    that.items = [];
-   that.NewItem ("money",    100, "dollar", "dollars");
-   that.NewItem ("coffee",   0,   "cup of coffee", "cups of coffee");
-   that.NewItem ("beer",     0,   "pint of beer",  "pints of beer");
-   that.NewItem ("raingear", 0,   "piece of raingear", "pieces of raingear");
-   that.NewItem ("food",     0,   "meal", "meals");
+   that.NewItem ("money",    100,  "dollar", "dollars");
+   that.NewItem ("coffee",   0.00, "cup of coffee", "cups of coffee");
+   that.NewItem ("beer",     0.00, "pint of beer",  "pints of beer");
+   that.NewItem ("raingear", 0.00, "piece of raingear", "pieces of raingear");
+   that.NewItem ("food",     0.00, "meal", "meals");
 
-   // Our initial stats.
-   that.Name = "Nameless";
-   that.Morale = 100;
-   that.Energy = 100;
-   that.Health = 100;
+   // Initialize our stats.
+   that.stats = [];
+   that.NewStat ("energy", 100);
+   that.NewStat ("morale", 100);
+   that.NewStat ("health", 100);
 }

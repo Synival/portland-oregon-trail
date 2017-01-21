@@ -22,7 +22,7 @@ function Item (name, quantity, price, unit, units) {
    that.units    = units;
 }
 
-function ItemDoesntExist (name) {
+function ItemExists (name) {
    for (var i in gItemNames)
       if (gItemNames[i] == name)
          return true;

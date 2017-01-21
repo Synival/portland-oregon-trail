@@ -9,12 +9,11 @@ window.onload = function() {
    gPlayer.LogItems ();
 
    // Create a store with stuff.
-   var myStore = new Store ("Pioneer Square", [
-      new StoreItem ("coffee",   3),
-      new StoreItem ("beer",     5),
-      new StoreItem ("food",     8),
-      new StoreItem ("raingear", 25)
-   ]);
+   var myStore = new Store ("Pioneer Square");
+   myStore.NewItem ("coffee",   3),
+   myStore.NewItem ("beer",     5),
+   myStore.NewItem ("food",     8),
+   myStore.NewItem ("raingear", 25)
    myStore.LogItems ();
 
    // Make some purchases.
