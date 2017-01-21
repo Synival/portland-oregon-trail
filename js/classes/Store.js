@@ -1,9 +1,16 @@
 "use strict"
 
-function Store(name, items) {
+function Store (game, name) {
    var that = this;
 
+   // Add to our store list.
+   that.game = game;
+   game.stores.push (that);
+
    // Functions.
+   that.GetGame = function () {
+      return game;
+   };
    that.GetItem = function (name) {
       if (!(name in that.items))
          return null;
@@ -16,10 +23,7 @@ function Store(name, items) {
          console.log ("   $" + item.price + ": " + item.name);
       }
       console.log ("");
-   }
-   that.NewItem = function (name, quantity) {
-      that.items[name] = new StoreItem (name, quantity);
-   }
+   };
 
    // Initialization.
    that.name  = name;

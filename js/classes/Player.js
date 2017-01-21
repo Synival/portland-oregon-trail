@@ -1,19 +1,16 @@
 "use strict"
 
-function Player() {
+function Player (game) {
    var that = this;
 
+   // Assert ourselves as this game's player.
+   that.game = game;
+   game.player = that;
+
    // Functions.
-   that.NewItem = function (name, quantity, unit, units) {
-      if (!ItemExists (name))
-         return;
-      that.items[name] = new Item (name, quantity, unit, units);
+   that.GetGame = function () {
+      return that.game;
    };
-   that.NewStat = function (name, value) {
-      if (!StatExists (name))
-         return;
-      that.stats[name] = new Stat (name, value);
-   }
    that.Purchase = function (store, name, quantity) {
       // Get our own items and the store items.
       var pItem = that.GetItem (name);
@@ -120,20 +117,25 @@ function Player() {
       stat.Change (-partialHours * scale);
    }
 
+   // Add to our game.
+   that.game = game;
+   game.player = that;
+
    // Basic initialization.
    that.Name = "Nameless";
 
    // Initialize our items.
    that.items = [];
-   that.NewItem ("money",    100,  "dollar", "dollars");
-   that.NewItem ("coffee",   0.00, "cup of coffee", "cups of coffee");
-   that.NewItem ("beer",     0.00, "pint of beer",  "pints of beer");
-   that.NewItem ("raingear", 0.00, "piece of raingear", "pieces of raingear");
-   that.NewItem ("food",     0.00, "meal", "meals");
+   new Item (that, "money",    100,  "dollar", "dollars");
+   new Item (that, "coffee",   0.00, "cup of coffee", "cups of coffee");
+   new Item (that, "beer",     0.00, "pint of beer",  "pints of beer");
+   new Item (that, "raingear", 0.00, "piece of raingear", "pieces of raingear");
+   new Item (that, "food",     0.00, "meal", "meals");
+   new Item (that, "souvenir", 0.00, "souvenir", "souvenirs");
 
    // Initialize our stats.
    that.stats = [];
-   that.NewStat ("energy", 100);
-   that.NewStat ("morale", 100);
-   that.NewStat ("health", 100);
+   new Stat (that, "energy", 100);
+   new Stat (that, "morale", 100);
+   new Stat (that, "health", 100);
 }

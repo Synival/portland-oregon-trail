@@ -1,33 +1,34 @@
 "use strict"
 
-// Our global variables.
-var gPlayer = null;
-
 window.onload = function() {
+   // Start a new game.
+   gGame = new Game();
+
    // Create a global player object.
-   gPlayer = new Player ();
-   gPlayer.LogItems ();
+   var player = gGame.GetPlayer();
+   player.LogItems ();
 
    // Create a store with stuff.
-   var myStore = new Store ("Pioneer Square");
-   myStore.NewItem ("coffee",   3),
-   myStore.NewItem ("beer",     5),
-   myStore.NewItem ("food",     8),
-   myStore.NewItem ("raingear", 25)
+   var myStore = new Store (gGame, "Pioneer Square");
+   new StoreItem (myStore, "coffee",   3),
+   new StoreItem (myStore, "beer",     5),
+   new StoreItem (myStore, "food",     8),
+   new StoreItem (myStore, "raingear", 25)
    myStore.LogItems ();
 
    // Make some purchases.
-   gPlayer.Purchase (myStore, "coffee",   10);
-   gPlayer.Purchase (myStore, "food",     6);
-   gPlayer.Purchase (myStore, "raingear", 5);
+   player.Purchase (myStore, "coffee",   3);
+   player.Purchase (myStore, "beer",     3);
+   player.Purchase (myStore, "food",     5);
+   player.Purchase (myStore, "raingear", 1);
    console.log ("");
 
    // Check new inventory.
-   gPlayer.LogItems ();
-   gPlayer.LogStats ();
+   player.LogItems ();
+   player.LogStats ();
 
    // Simulate gameplay.
-   gPlayer.Tick (5.76);
-   gPlayer.LogItems ();
-   gPlayer.LogStats ();
+   player.Tick (5.76);
+   player.LogItems ();
+   player.LogStats ();
 };
