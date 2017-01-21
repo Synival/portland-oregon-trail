@@ -24,4 +24,10 @@ window.onload = function() {
 
    // Check new inventory.
    gPlayer.LogItems ();
+   gPlayer.LogStats ();
+
+   // Simulate gameplay.
+   gPlayer.Tick (5.76);
+   gPlayer.LogItems ();
+   gPlayer.LogStats ();
 };

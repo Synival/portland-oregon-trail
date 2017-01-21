@@ -5,14 +5,18 @@ function Item (name, quantity, price, unit, units) {
 
    // Functions.
    that.DisplayName = function (quantity) {
+      var unit = that.unit;
       if (quantity == null)
          quantity = that.quantity;
-      if (quantity == 1 || that.units == null)
-         return quantity + " " + that.unit;
-      else if (that.units != null)
-         return quantity + " " + that.units;
-      else
-         return "<error>";
+      if (quantity != 1 && that.units != null)
+         unit = that.units;
+      var q = quantity.toFixed (1);
+      if (q.charAt (q.length - 1) == '0')
+         q = quantity.toFixed (0);
+      return q + " " + unit;
+   }
+   that.Change = function (amount) {
+      that.quantity += amount;
    }
 
    // Initialization.

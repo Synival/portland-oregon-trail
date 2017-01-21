@@ -49,6 +49,11 @@ function Player() {
          return null;
       return that.items[name];
    };
+   that.GetStat = function (name) {
+      if (!(name in that.stats))
+         return null;
+      return that.stats[name];
+   };
    that.ChangeItem = function (name, amount) {
       var item;
       if (name instanceof Item)
@@ -57,7 +62,7 @@ function Player() {
          item = that.GetItem (name);
       if (item == null)
          return false;
-      item.quantity += amount;
+      item.Change (amount);
       return true;
    };
    that.GetMoney = function () {
@@ -74,6 +79,46 @@ function Player() {
       }
       console.log ("");
    };
+   that.LogStats = function () {
+      console.log ("Your stats:");
+      for (var i in that.stats) {
+         var stat = that.stats[i];
+         console.log ("   " + stat.DisplayName ());
+      }
+      console.log ("");
+   };
+   that.Tick = function (hours) {
+      that.DrainStatFromItem ("energy", "coffee",   8.00, hours, 10.00);
+      that.DrainStatFromItem ("morale", "beer",     4.00, hours, 10.00);
+      that.DrainStatFromItem ("health", "raingear", null, hours, 20.00);
+      that.DrainStatFromItem ("health", "food",     6.00, hours, 10.00);
+   };
+   that.DrainStatFromItem = function (statName, itemName, rate, hours, scale) {
+      var stat = that.GetStat (statName);
+      var item = that.GetItem (itemName);
+
+      // If we have none of that item, we automatically lose from our stat.
+      if (item.value == 0) {
+         stat.Change (hours * scale);
+         return;
+      }
+
+      // If there's no consumption rate, do nothing if we have that item.
+      if (rate == null)
+         return;
+
+      // If we have enough of that item to reduce it, do it now.
+      var loss = hours / rate;
+      if (loss < item.quantity) {
+         item.Change (-loss);
+         return;
+      }
+
+      // We're losing more than what we have - do fancy math.
+      var partialHours = (loss - item.quantity) * rate;
+      item.Change (-item.quantity);
+      stat.Change (-partialHours * scale);
+   }
 
    // Basic initialization.
    that.Name = "Nameless";
